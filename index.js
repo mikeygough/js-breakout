@@ -1,4 +1,6 @@
+/* eslint-disable import/extensions */
 import Brick from './Brick.js';
+import Ball from './Ball.js';
 
 // variables ----------------------------------------------------
 // canvas & ball
