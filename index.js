@@ -1,3 +1,5 @@
+import Brick from './Brick.js';
+
 // variables ----------------------------------------------------
 // canvas & ball
 const canvas = document.getElementById('myCanvas');
@@ -32,7 +34,7 @@ const bricks = [];
 for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
+    bricks[c][r] = new Brick(0, 0);
   }
 }
 
@@ -72,16 +74,17 @@ function collisionDetection() {
       const b = bricks[c][r];
       if (b.status === 1) {
         if (
-          x > b.x
-          && x < b.x + brickWidth
-          && y > b.y
-          && y < b.y + brickHeight
+          x > b.x &&
+          x < b.x + brickWidth &&
+          y > b.y &&
+          y < b.y + brickHeight
         ) {
           dy = -dy;
           b.status = 0;
           score += 1;
           if (score === brickRowCount * brickColumnCount) {
-            gameMessage.innerHTML = 'You Win! CONGRATULATIONS! Playing again in 5 seconds...';
+            gameMessage.innerHTML =
+              'You Win! CONGRATULATIONS! Playing again in 5 seconds...';
             gameMessage.style.display = 'block';
             isPlaying = false;
             // Set a 5-second timer
@@ -105,7 +108,12 @@ function drawBall() {
 
 function drawPaddle() {
   ctx.beginPath();
-  ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  ctx.rect(
+    paddleX,
+    canvas.height - paddleHeight,
+    paddleWidth,
+    paddleHeight
+  );
   ctx.fillStyle = paddleColor;
   ctx.fill();
   ctx.closePath();
@@ -115,8 +123,10 @@ function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
-        const brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
-        const brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
+        const brickX =
+          r * (brickWidth + brickPadding) + brickOffsetLeft;
+        const brickY =
+          c * (brickHeight + brickPadding) + brickOffsetTop;
         bricks[c][r].x = brickX;
         bricks[c][r].y = brickY;
         ctx.beginPath();
@@ -143,7 +153,12 @@ function drawLives() {
 }
 
 function drawGradient(currentCanvas) {
-  const gradient = ctx.createLinearGradient(0, 0, currentCanvas.width, currentCanvas.height);
+  const gradient = ctx.createLinearGradient(
+    0,
+    0,
+    currentCanvas.width,
+    currentCanvas.height
+  );
   // Add three color stops
   gradient.addColorStop(0, '#fee08b');
   gradient.addColorStop(0.5, '#ffffbf');
@@ -178,7 +193,8 @@ function draw() {
     } else {
       lives -= 1;
       if (!lives) {
-        gameMessage.innerHTML = 'You Lose! Playing again in 5 seconds...';
+        gameMessage.innerHTML =
+          'You Lose! Playing again in 5 seconds...';
         gameMessage.style.display = 'block';
         isPlaying = false;
         // Set a 5-second timer
