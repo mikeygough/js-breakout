@@ -1,27 +1,29 @@
 /* eslint-disable import/extensions */
 import Brick from './Brick.js';
 import Ball from './Ball.js';
+import Paddle from './Paddle.js';
+import Background from './Background.js';
 
 // variables ----------------------------------------------------
 // canvas
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
+const background = new Background(canvas, 'red', 'green', 'blue');
 
 // ball
-const x = canvas.width / 2;
-const y = canvas.height - 30;
-const ball = new Ball(x, y);
+const ballX = canvas.width / 2;
+const ballY = canvas.height - 30;
+const ball = new Ball(ballX, ballY);
 
 // game message
 const gameMessage = document.getElementById('gameMessage');
 
 // paddle
-const paddleHeight = 10;
-const paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
+const paddleX = (canvas.width - 75) / 2;
+const paddleY = canvas.height - 10;
+const paddle = new Paddle(paddleX, paddleY);
 let rightPressed = false;
 let leftPressed = false;
-const paddleColor = '#1a1a1a';
 
 // bricks
 const brickRowCount = 5;
@@ -63,7 +65,7 @@ function keyUpHandler(e) {
 function mouseMoveHandler(e) {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
-    paddleX = relativeX - paddleWidth / 2;
+    paddle.x = relativeX - paddle.width / 2;
   }
 }
 
@@ -97,19 +99,6 @@ function collisionDetection() {
   }
 }
 
-function drawPaddle() {
-  ctx.beginPath();
-  ctx.rect(
-    paddleX,
-    canvas.height - paddleHeight,
-    paddleWidth,
-    paddleHeight
-  );
-  ctx.fillStyle = paddleColor;
-  ctx.fill();
-  ctx.closePath();
-}
-
 function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
@@ -141,21 +130,21 @@ function drawLives() {
   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
-function drawGradient(currentCanvas) {
-  const gradient = ctx.createLinearGradient(
-    0,
-    0,
-    currentCanvas.width,
-    currentCanvas.height
-  );
-  // Add three color stops
-  gradient.addColorStop(0, '#fee08b');
-  gradient.addColorStop(0.5, '#ffffbf');
-  gradient.addColorStop(1, '#e6f598');
-  // Set the fill style and draw a rectangle
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, currentCanvas.width, currentCanvas.height);
-}
+// function drawGradient(currentCanvas) {
+//   const gradient = ctx.createLinearGradient(
+//     0,
+//     0,
+//     currentCanvas.width,
+//     currentCanvas.height
+//   );
+//   // Add three color stops
+//   gradient.addColorStop(0, '#fee08b');
+//   gradient.addColorStop(0.5, '#ffffbf');
+//   gradient.addColorStop(1, '#e6f598');
+//   // Set the fill style and draw a rectangle
+//   ctx.fillStyle = gradient;
+//   ctx.fillRect(0, 0, currentCanvas.width, currentCanvas.height);
+// }
 
 function draw() {
   if (!isPlaying) {
@@ -163,14 +152,11 @@ function draw() {
   }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawGradient(canvas);
+  background.render(ctx);
   drawBricks();
 
-  // drawBall();
-  // const ball = new Ball(x, y);
   ball.render(ctx);
-
-  drawPaddle();
+  paddle.render(ctx);
   drawScore();
   drawLives();
   collisionDetection();
@@ -184,7 +170,7 @@ function draw() {
   if (ball.y + ball.dy < ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.dy > canvas.height - ball.radius) {
-    if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+    if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
       ball.dy = -ball.dy;
     } else {
       lives -= 1;
@@ -202,15 +188,15 @@ function draw() {
         ball.y = canvas.height - 30;
         ball.dx = 3;
         ball.dy = -3;
-        paddleX = (canvas.width - paddleWidth) / 2;
+        paddle.x = (canvas.width - paddle.width) / 2;
       }
     }
   }
 
-  if (rightPressed && paddleX < canvas.width - paddleWidth) {
-    paddleX += 7;
-  } else if (leftPressed && paddleX > 0) {
-    paddleX -= 7;
+  if (rightPressed && paddle.x < canvas.width - paddle.width) {
+    paddle.x += 7;
+  } else if (leftPressed && paddle.x > 0) {
+    paddle.x -= 7;
   }
 
   ball.x += ball.dx;
