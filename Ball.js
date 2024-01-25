@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import Sprite from './Sprite.js';
 
 class Ball extends Sprite {

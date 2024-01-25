@@ -26,8 +26,6 @@ const paddleColor = '#1a1a1a';
 // bricks
 const brickRowCount = 5;
 const brickColumnCount = 4;
-const brickWidth = 75;
-const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
@@ -72,16 +70,16 @@ function mouseMoveHandler(e) {
 function collisionDetection() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
-      const b = bricks[c][r];
-      if (b.status === 1) {
+      const brick = bricks[c][r];
+      if (brick.status === 1) {
         if (
-          ball.x > b.x &&
-          ball.x < b.x + brickWidth &&
-          ball.y > b.y &&
-          ball.y < b.y + brickHeight
+          ball.x > brick.x &&
+          ball.x < brick.x + brick.width &&
+          ball.y > brick.y &&
+          ball.y < brick.y + brick.height
         ) {
           ball.dy = -ball.dy;
-          b.status = 0;
+          brick.status = 0;
           score += 1;
           if (score === brickRowCount * brickColumnCount) {
             gameMessage.innerHTML =
@@ -115,19 +113,17 @@ function drawPaddle() {
 function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
-      if (bricks[c][r].status === 1) {
+      const brick = bricks[c][r];
+      if (brick.status === 1) {
         const brickX =
-          r * (brickWidth + brickPadding) + brickOffsetLeft;
+          r * (brick.width + brickPadding) + brickOffsetLeft;
         const brickY =
-          c * (brickHeight + brickPadding) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
-        ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+          c * (brick.height + brickPadding) + brickOffsetTop;
+        brick.x = brickX;
+        brick.y = brickY;
         const color = c % 2 === 0 ? '#8dd3c7' : '#fccde5';
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.closePath();
+        brick.color = color;
+        brick.render(ctx);
       }
     }
   }
