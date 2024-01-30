@@ -3,6 +3,7 @@ import Brick from './Brick.js';
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
 import Background from './Background.js';
+import Score from './Score.js';
 
 // variables ----------------------------------------------------
 // canvas
@@ -40,7 +41,8 @@ for (let c = 0; c < brickColumnCount; c += 1) {
 }
 
 // score & lives
-let score = 0;
+// let score = 0;
+const score = new Score();
 let lives = 3;
 const menuColor = '#1a1a1a';
 let isPlaying = true;
@@ -82,8 +84,8 @@ function collisionDetection() {
         ) {
           ball.dy = -ball.dy;
           brick.status = 0;
-          score += 1;
-          if (score === brickRowCount * brickColumnCount) {
+          score.value += 1;
+          if (score.value === brickRowCount * brickColumnCount) {
             gameMessage.innerHTML =
               'You Win! CONGRATULATIONS! Playing again in 5 seconds...';
             gameMessage.style.display = 'block';
@@ -118,33 +120,11 @@ function drawBricks() {
   }
 }
 
-function drawScore() {
-  ctx.font = '16px Arial';
-  ctx.fillStyle = menuColor;
-  ctx.fillText(`Score: ${score}`, 8, 20);
-}
-
 function drawLives() {
   ctx.font = '16px Arial';
   ctx.fillStyle = menuColor;
   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
-
-// function drawGradient(currentCanvas) {
-//   const gradient = ctx.createLinearGradient(
-//     0,
-//     0,
-//     currentCanvas.width,
-//     currentCanvas.height
-//   );
-//   // Add three color stops
-//   gradient.addColorStop(0, '#fee08b');
-//   gradient.addColorStop(0.5, '#ffffbf');
-//   gradient.addColorStop(1, '#e6f598');
-//   // Set the fill style and draw a rectangle
-//   ctx.fillStyle = gradient;
-//   ctx.fillRect(0, 0, currentCanvas.width, currentCanvas.height);
-// }
 
 function draw() {
   if (!isPlaying) {
@@ -157,7 +137,7 @@ function draw() {
 
   ball.render(ctx);
   paddle.render(ctx);
-  drawScore();
+  score.render(ctx);
   drawLives();
   collisionDetection();
 
