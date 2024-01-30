@@ -10,7 +10,7 @@ class Score extends Sprite {
     height = 20,
     color = '#CCCCCC',
     value = 0,
-    font = '16px Arial'
+    font = "16px 'Press Start 2P', system-ui"
   ) {
     // we need to pass width=0 and height=0
     super(x, y, width, height, color);

@@ -25,6 +25,7 @@ const ball = new Ball(ballX, ballY);
 // game message
 const gameMessage = document.getElementById('gameMessage');
 gameMessage.style.color = '#CCCCCC';
+gameMessage.style.font = "16px 'Press Start 2P', system-ui";
 
 // paddle
 const paddleX = (canvas.width - 75) / 2;
