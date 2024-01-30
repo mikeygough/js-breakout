@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable operator-linebreak */
 /* eslint-disable import/extensions */
 import Brick from './Brick.js';
 import {
@@ -72,7 +74,6 @@ for (let c = 0; c < brickColumnCount; c += 1) {
         break;
     }
     bricks[c][r].color = color;
-    // bricks[c][r].render(ctx);
   }
 }
 
