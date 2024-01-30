@@ -4,12 +4,18 @@ import Ball from './Ball.js';
 import Paddle from './Paddle.js';
 import Background from './Background.js';
 import Score from './Score.js';
+import Lives from './Lives.js';
 
 // variables ----------------------------------------------------
 // canvas
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-const background = new Background(canvas, 'red', 'green', 'blue');
+const background = new Background(
+  canvas,
+  '#222222',
+  '#222222',
+  '#222222'
+);
 
 // ball
 const ballX = canvas.width / 2;
@@ -18,6 +24,7 @@ const ball = new Ball(ballX, ballY);
 
 // game message
 const gameMessage = document.getElementById('gameMessage');
+gameMessage.style.color = '#CCCCCC';
 
 // paddle
 const paddleX = (canvas.width - 75) / 2;
@@ -40,11 +47,9 @@ for (let c = 0; c < brickColumnCount; c += 1) {
   }
 }
 
-// score & lives
-// let score = 0;
+// score, lives & playing
 const score = new Score();
-let lives = 3;
-const menuColor = '#1a1a1a';
+const lives = new Lives();
 let isPlaying = true;
 
 // functions ----------------------------------------------------
@@ -112,18 +117,29 @@ function drawBricks() {
           c * (brick.height + brickPadding) + brickOffsetTop;
         brick.x = brickX;
         brick.y = brickY;
-        const color = c % 2 === 0 ? '#8dd3c7' : '#fccde5';
+        let color;
+        switch (c % 4) {
+          case 0:
+            color = '#5FA052';
+            break;
+          case 1:
+            color = '#A3A43F';
+            break;
+          case 2:
+            color = '#BC7143';
+            break;
+          case 3:
+            color = '#BB504B';
+            break;
+          default:
+            color = '#4146C2';
+            break;
+        }
         brick.color = color;
         brick.render(ctx);
       }
     }
   }
-}
-
-function drawLives() {
-  ctx.font = '16px Arial';
-  ctx.fillStyle = menuColor;
-  ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
 function draw() {
@@ -138,7 +154,7 @@ function draw() {
   ball.render(ctx);
   paddle.render(ctx);
   score.render(ctx);
-  drawLives();
+  lives.render(ctx);
   collisionDetection();
 
   if (
@@ -153,8 +169,8 @@ function draw() {
     if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
       ball.dy = -ball.dy;
     } else {
-      lives -= 1;
-      if (!lives) {
+      lives.value -= 1;
+      if (lives.value === 0) {
         gameMessage.innerHTML =
           'You Lose! Playing again in 5 seconds...';
         gameMessage.style.display = 'block';

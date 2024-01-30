@@ -2,14 +2,14 @@
 // eslint-disable-next-line import/extensions
 import Sprite from './Sprite.js';
 
-class Score extends Sprite {
+class Lives extends Sprite {
   constructor(
     x = 0,
     y = 0,
-    width = 8,
+    width = 415,
     height = 20,
     color = '#CCCCCC',
-    value = 0,
+    value = 3,
     font = '16px Arial'
   ) {
     // we need to pass width=0 and height=0
@@ -22,12 +22,12 @@ class Score extends Sprite {
     // overload
     ctx.font = this.font;
     ctx.fillStyle = this.color;
-    ctx.fillText(`Score: ${this.value}`, this.width, this.height);
+    ctx.fillText(`Lives: ${this.value}`, this.width, this.height);
   }
 
   reset() {
-    this.value = 0;
+    this.value = 3;
   }
 }
 
-export default Score;
+export default Lives;
