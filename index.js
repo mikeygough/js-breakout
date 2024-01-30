@@ -1,5 +1,14 @@
 /* eslint-disable import/extensions */
 import Brick from './Brick.js';
+import {
+  brickPadding,
+  brickRowCount,
+  brickColumnCount,
+  brickOffsetTop,
+  brickOffsetLeft,
+  brickHeight,
+  brickWidth,
+} from './constants.js';
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
 import Background from './Background.js';
@@ -26,6 +35,7 @@ const ball = new Ball(ballX, ballY);
 const gameMessage = document.getElementById('gameMessage');
 gameMessage.style.color = '#CCCCCC';
 gameMessage.style.font = "16px 'Press Start 2P', system-ui";
+gameMessage.style.textAlign = 'center';
 
 // paddle
 const paddleX = (canvas.width - 75) / 2;
@@ -35,16 +45,34 @@ let rightPressed = false;
 let leftPressed = false;
 
 // bricks
-const brickRowCount = 5;
-const brickColumnCount = 4;
-const brickPadding = 10;
-const brickOffsetTop = 30;
-const brickOffsetLeft = 30;
 const bricks = [];
 for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
-    bricks[c][r] = new Brick(0, 0);
+    const brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
+    const brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
+    bricks[c][r] = new Brick(brickX, brickY);
+    // set color
+    let color;
+    switch (c % 4) {
+      case 0:
+        color = '#5FA052'; // green
+        break;
+      case 1:
+        color = '#A3A43F'; // yellow
+        break;
+      case 2:
+        color = '#BC7143'; // orange
+        break;
+      case 3:
+        color = '#BB504B'; // red
+        break;
+      default:
+        color = '#4146C2'; // backup blue
+        break;
+    }
+    bricks[c][r].color = color;
+    // bricks[c][r].render(ctx);
   }
 }
 
@@ -52,6 +80,9 @@ for (let c = 0; c < brickColumnCount; c += 1) {
 const score = new Score();
 const lives = new Lives();
 let isPlaying = true;
+
+// audio
+const hitBrick = document.getElementById('hitBrick');
 
 // functions ----------------------------------------------------
 function keyDownHandler(e) {
@@ -91,9 +122,10 @@ function collisionDetection() {
           ball.dy = -ball.dy;
           brick.status = 0;
           score.value += 1;
+          hitBrick.play();
           if (score.value === brickRowCount * brickColumnCount) {
             gameMessage.innerHTML =
-              'You Win! CONGRATULATIONS! Playing again in 5 seconds...';
+              'You Win! <br> CONGRATULATIONS! <br> Playing again in 5 seconds...';
             gameMessage.style.display = 'block';
             isPlaying = false;
             // Set a 5-second timer
@@ -112,31 +144,6 @@ function drawBricks() {
     for (let r = 0; r < brickRowCount; r += 1) {
       const brick = bricks[c][r];
       if (brick.status === 1) {
-        const brickX =
-          r * (brick.width + brickPadding) + brickOffsetLeft;
-        const brickY =
-          c * (brick.height + brickPadding) + brickOffsetTop;
-        brick.x = brickX;
-        brick.y = brickY;
-        let color;
-        switch (c % 4) {
-          case 0:
-            color = '#5FA052'; // green
-            break;
-          case 1:
-            color = '#A3A43F'; // yellow
-            break;
-          case 2:
-            color = '#BC7143'; // orange
-            break;
-          case 3:
-            color = '#BB504B'; // red
-            break;
-          default:
-            color = '#4146C2'; // backup blue
-            break;
-        }
-        brick.color = color;
         brick.render(ctx);
       }
     }
@@ -173,7 +180,7 @@ function draw() {
       lives.value -= 1;
       if (lives.value === 0) {
         gameMessage.innerHTML =
-          'You Lose! Playing again in 5 seconds...';
+          'You Lose! <br>Playing again in 5 seconds...';
         gameMessage.style.display = 'block';
         isPlaying = false;
         // Set a 5-second timer

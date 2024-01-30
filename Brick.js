@@ -1,10 +1,19 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable lines-between-class-members */
 // eslint-disable-next-line import/extensions
 import Sprite from './Sprite.js';
 
 class Brick extends Sprite {
-  constructor(x, y, width = 75, height = 20, color = '#0095DD') {
+  constructor(
+    x,
+    y,
+    width = 75,
+    height = 20,
+    color = '#0095DD',
+    status = 1
+  ) {
     super(x, y, width, height, color);
-    this.status = 1;
+    this.status = status;
   }
 
   render(ctx) {
