@@ -120,19 +120,19 @@ function drawBricks() {
         let color;
         switch (c % 4) {
           case 0:
-            color = '#5FA052';
+            color = '#5FA052'; // green
             break;
           case 1:
-            color = '#A3A43F';
+            color = '#A3A43F'; // yellow
             break;
           case 2:
-            color = '#BC7143';
+            color = '#BC7143'; // orange
             break;
           case 3:
-            color = '#BB504B';
+            color = '#BB504B'; // red
             break;
           default:
-            color = '#4146C2';
+            color = '#4146C2'; // backup blue
             break;
         }
         brick.color = color;
