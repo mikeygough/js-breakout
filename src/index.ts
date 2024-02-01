@@ -19,9 +19,11 @@ import Lives from './Lives.js';
 
 // variables ----------------------------------------------------
 // canvas
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
-const background = new Background(
+const canvas = document.getElementById(
+  'myCanvas'
+) as HTMLCanvasElement;
+const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+const background: Background = new Background(
   canvas,
   '#222222',
   '#222222',
@@ -29,33 +31,37 @@ const background = new Background(
 );
 
 // ball
-const ballX = canvas.width / 2;
-const ballY = canvas.height - 30;
-const ball = new Ball(ballX, ballY);
+const ballX: number = canvas.width / 2;
+const ballY: number = canvas.height - 30;
+const ball: Ball = new Ball(ballX, ballY);
 
 // game message
-const gameMessage = document.getElementById('gameMessage');
+const gameMessage = document.getElementById(
+  'gameMessage'
+) as HTMLParagraphElement;
 gameMessage.style.color = '#CCCCCC';
 gameMessage.style.font = "16px 'Press Start 2P', system-ui";
 gameMessage.style.textAlign = 'center';
 
 // paddle
-const paddleX = (canvas.width - 75) / 2;
-const paddleY = canvas.height - 10;
-const paddle = new Paddle(paddleX, paddleY);
-let rightPressed = false;
-let leftPressed = false;
+const paddleX: number = (canvas.width - 75) / 2;
+const paddleY: number = canvas.height - 10;
+const paddle: Paddle = new Paddle(paddleX, paddleY);
+let rightPressed: boolean = false;
+let leftPressed: boolean = false;
 
 // bricks
-const bricks = [];
+const bricks: Brick[][] = [];
 for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
-    const brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
-    const brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
+    const brickX: number =
+      r * (brickWidth + brickPadding) + brickOffsetLeft;
+    const brickY: number =
+      c * (brickHeight + brickPadding) + brickOffsetTop;
     bricks[c][r] = new Brick(brickX, brickY);
     // set color
-    let color;
+    let color: string;
     switch (c % 4) {
       case 0:
         color = '#5FA052'; // green
@@ -78,15 +84,17 @@ for (let c = 0; c < brickColumnCount; c += 1) {
 }
 
 // score, lives & playing
-const score = new Score();
-const lives = new Lives();
-let isPlaying = true;
+const score: Score = new Score();
+const lives: Lives = new Lives();
+let isPlaying: boolean = true;
 
 // audio
-const hitBrick = document.getElementById('hitBrick');
+const hitBrick = document.getElementById(
+  'hitBrick'
+) as HTMLAudioElement;
 
 // functions ----------------------------------------------------
-function keyDownHandler(e) {
+function keyDownHandler(e: KeyboardEvent): void {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
@@ -94,7 +102,7 @@ function keyDownHandler(e) {
   }
 }
 
-function keyUpHandler(e) {
+function keyUpHandler(e: KeyboardEvent): void {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
@@ -102,14 +110,14 @@ function keyUpHandler(e) {
   }
 }
 
-function mouseMoveHandler(e) {
-  const relativeX = e.clientX - canvas.offsetLeft;
+function mouseMoveHandler(e: MouseEvent): void {
+  const relativeX: number = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
     paddle.x = relativeX - paddle.width / 2;
   }
 }
 
-function collisionDetection() {
+function collisionDetection(): void {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       const brick = bricks[c][r];
@@ -140,7 +148,7 @@ function collisionDetection() {
   }
 }
 
-function drawBricks() {
+function drawBricks(): void {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       const brick = bricks[c][r];
@@ -151,7 +159,7 @@ function drawBricks() {
   }
 }
 
-function draw() {
+function draw(): boolean {
   if (!isPlaying) {
     return;
   }
