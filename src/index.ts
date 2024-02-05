@@ -1,7 +1,7 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable operator-linebreak */
 /* eslint-disable import/extensions */
-import Brick from './Brick.js';
+import Brick from './Brick';
 import {
   brickPadding,
   brickRowCount,
@@ -10,12 +10,12 @@ import {
   brickOffsetLeft,
   brickHeight,
   brickWidth,
-} from './constants.js';
-import Ball from './Ball.js';
-import Paddle from './Paddle.js';
-import Background from './Background.js';
-import Score from './Score.js';
-import Lives from './Lives.js';
+} from './constants';
+import Ball from './Ball';
+import Paddle from './Paddle';
+import Background from './Background';
+import Score from './Score';
+import Lives from './Lives';
 
 // variables ----------------------------------------------------
 // canvas

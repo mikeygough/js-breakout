@@ -1,8 +1,25 @@
 // eslint-disable-next-line import/extensions
-import Sprite from './Sprite.js';
+import Sprite from './Sprite';
 
 class Ball extends Sprite {
-  constructor(x = 0, y = 0, radius = 10, color = '#999999') {
+  x: number;
+
+  y: number;
+
+  radius: number;
+
+  color: string;
+
+  dx: number;
+
+  dy: number;
+
+  constructor(
+    x: number = 0,
+    y: number = 0,
+    radius: number = 10,
+    color: string = '#999999',
+  ) {
     // we need to pass width=0 and height=0
     super(x, y, 0, 0, color);
     this.radius = radius;
@@ -10,12 +27,12 @@ class Ball extends Sprite {
     this.dy = -2;
   }
 
-  move() {
+  move(): void {
     this.x += this.dx;
     this.y += this.dy;
   }
 
-  render(ctx) {
+  render(ctx: CanvasRenderingContext2D): void {
     // overload
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);

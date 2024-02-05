@@ -1,12 +1,28 @@
 // eslint-disable-next-line import/extensions
-import Sprite from './Sprite.js';
+import Sprite from './Sprite';
 
 class Paddle extends Sprite {
-  constructor(x, y, width = 75, height = 10, color = '#3B86F7') {
+  x: number;
+
+  y: number;
+
+  width: number;
+
+  height: number;
+
+  color: string;
+
+  constructor(
+    x: number,
+    y: number,
+    width: number = 75,
+    height: number = 10,
+    color: string = '#3B86F7',
+  ) {
     super(x, y, width, height, color);
   }
 
-  render(ctx) {
+  render(ctx: CanvasRenderingContext2D): void {
     // overload
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);

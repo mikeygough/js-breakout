@@ -1,10 +1,18 @@
 /* eslint-disable comma-dangle */
 class Background {
+  canvas: HTMLCanvasElement;
+
+  colorOne: string;
+
+  colorTwo: string;
+
+  colorThree: string;
+
   constructor(
-    canvas,
-    colorOne = '#fee08b',
-    colorTwo = '#ffffbf',
-    colorThree = '#e6f598'
+    canvas: HTMLCanvasElement,
+    colorOne: string = '#fee08b',
+    colorTwo: string = '#ffffbf',
+    colorThree: string = '#e6f598'
   ) {
     this.canvas = canvas;
     this.colorOne = colorOne;
@@ -12,7 +20,7 @@ class Background {
     this.colorThree = colorThree;
   }
 
-  render(ctx) {
+  render(ctx: CanvasRenderingContext2D): void {
     // overload
     const gradient = ctx.createLinearGradient(
       0,
